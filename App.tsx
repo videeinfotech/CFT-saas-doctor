@@ -1,29 +1,41 @@
 
 import React, { useState, useEffect } from 'react';
-import { SplashScreen } from './screens/SplashScreen';
-import { DoctorLogin } from './screens/doctor/DoctorLogin';
-import { DoctorOtp } from './screens/doctor/DoctorOtp';
-import { DoctorRegistration } from './screens/doctor/DoctorRegistration';
-import { DoctorServices } from './screens/doctor/DoctorServices';
-import { DoctorTimeSlots } from './screens/doctor/DoctorTimeSlots';
-import { DoctorDashboard } from './screens/doctor/DoctorDashboard';
-import { LiveQueue } from './screens/doctor/LiveQueue';
-import { Consultation } from './screens/doctor/Consultation';
-import { AppointmentsScreen } from './screens/doctor/AppointmentsScreen';
-import { ProfileScreen } from './screens/doctor/ProfileScreen';
-import { SettingsScreen } from './screens/doctor/SettingsScreen';
-import { ClinicQRCode } from './screens/doctor/ClinicQRCode';
+import { SplashScreen } from './screens/SplashScreen.tsx';
+import { DoctorLogin } from './screens/doctor/DoctorLogin.tsx';
+import { DoctorOtp } from './screens/doctor/DoctorOtp.tsx';
+import { DoctorRegistration } from './screens/doctor/DoctorRegistration.tsx';
+import { DoctorServices } from './screens/doctor/DoctorServices.tsx';
+import { DoctorTimeSlots } from './screens/doctor/DoctorTimeSlots.tsx';
+import { DoctorDashboard } from './screens/doctor/DoctorDashboard.tsx';
+import { LiveQueue } from './screens/doctor/LiveQueue.tsx';
+import { Consultation } from './screens/doctor/Consultation.tsx';
+import { AppointmentsScreen } from './screens/doctor/AppointmentsScreen.tsx';
+import { ProfileScreen } from './screens/doctor/ProfileScreen.tsx';
+import { SettingsScreen } from './screens/doctor/SettingsScreen.tsx';
+import { ClinicQRCode } from './screens/doctor/ClinicQRCode.tsx';
+import { RoleSelection } from './screens/RoleSelection.tsx';
+import { PatientDashboard } from './screens/patient/PatientDashboard.tsx';
 
 const App: React.FC = () => {
-  const [currentScreen, setCurrentScreen] = useState<'splash' | 'login' | 'otp' | 'registration' | 'services' | 'slots' | 'dashboard' | 'liveQueue' | 'consultation' | 'appointments' | 'profile' | 'settings' | 'qrCode'>('splash');
+  const [currentScreen, setCurrentScreen] = useState<'splash' | 'role' | 'login' | 'otp' | 'registration' | 'services' | 'slots' | 'dashboard' | 'liveQueue' | 'consultation' | 'appointments' | 'profile' | 'settings' | 'qrCode' | 'patientDashboard'>('splash');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [userRole, setUserRole] = useState<'doctor' | 'patient' | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setCurrentScreen('login');
+      setCurrentScreen('role');
     }, 2500);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleSelectRole = (role: 'doctor' | 'patient') => {
+    setUserRole(role);
+    if (role === 'doctor') {
+      setCurrentScreen('login');
+    } else {
+      setCurrentScreen('patientDashboard');
+    }
+  };
 
   const handleSendOtp = (num: string) => {
     setPhoneNumber(num);
@@ -99,13 +111,20 @@ const App: React.FC = () => {
   };
 
   const handleLogout = () => {
-    setCurrentScreen('login');
+    setCurrentScreen('role');
+    setUserRole(null);
   };
 
   return (
     <div className="max-w-[480px] mx-auto min-h-screen relative shadow-2xl overflow-x-hidden bg-slate-50">
       {currentScreen === 'splash' && <SplashScreen />}
       
+      {currentScreen === 'role' && (
+        <div className="animate-in zoom-in duration-500">
+          <RoleSelection onSelectRole={handleSelectRole} />
+        </div>
+      )}
+
       {currentScreen === 'login' && (
         <div className="animate-in fade-in duration-500">
           <DoctorLogin onSendOtp={handleSendOtp} onRegister={handleGoToRegistration} />
@@ -194,6 +213,12 @@ const App: React.FC = () => {
       {currentScreen === 'qrCode' && (
         <div className="animate-in slide-in-from-right duration-500">
           <ClinicQRCode onBack={handleBackToProfile} />
+        </div>
+      )}
+
+      {currentScreen === 'patientDashboard' && (
+        <div className="animate-in zoom-in duration-500">
+          <PatientDashboard onLogout={handleLogout} />
         </div>
       )}
     </div>
