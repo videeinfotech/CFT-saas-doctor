@@ -18,11 +18,11 @@ if (!rootElement) {
   } catch (error) {
     console.error("Failed to render React application:", error);
     rootElement.innerHTML = `
-      <div style="padding: 20px; font-family: sans-serif; text-align: center;">
-        <h1 style="color: #ef4444;">Application Error</h1>
-        <p>There was a problem starting the application. Please check the console for details.</p>
-        <button onclick="window.location.reload()" style="padding: 8px 16px; background: #137fec; color: white; border: none; border-radius: 8px; cursor: pointer;">
-          Retry
+      <div style="padding: 20px; font-family: sans-serif; text-align: center; background: white; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <h1 style="color: #ef4444; margin-bottom: 10px;">Application Error</h1>
+        <p style="color: #64748b; margin-bottom: 20px;">There was a problem starting the application.</p>
+        <button onclick="window.location.reload()" style="padding: 12px 24px; background: #137fec; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold;">
+          Retry Loading
         </button>
       </div>
     `;
