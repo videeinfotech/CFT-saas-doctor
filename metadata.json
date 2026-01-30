@@ -1,0 +1,7 @@
+{
+  "name": "Claim Cure Buddy",
+  "description": "A high-performance healthcare management suite for doctors, featuring real-time queue synchronization, clinical management, and claim assistance.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
