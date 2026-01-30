@@ -6,24 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Claim Cure Buddy</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100..700,0..1,-25..0&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary: '#137fec',
+            primary: '#0062FF',
             navy: {
-              DEFAULT: '#0A192F',
+              DEFAULT: '#0A1128',
               accent: '#141E3C',
-              deep: '#070B1A',
-              900: '#020617'
+              deep: '#020617',
+              900: '#0A1128'
             }
           },
           fontFamily: {
             sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
-            display: ['Plus Jakarta Sans', 'sans-serif']
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+            manrope: ['Manrope', 'sans-serif']
           }
         }
       }
@@ -31,9 +32,9 @@
   </script>
   <style>
     .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
-    .material-fill {
+    .material-fill, .fill-1 {
       font-variation-settings: 'FILL' 1;
     }
     .no-scrollbar::-webkit-scrollbar {
@@ -43,8 +44,26 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+    .scan-gradient {
+      background: linear-gradient(135deg, #0062FF 0%, #6366F1 100%);
+    }
+    .soft-glow {
+      box-shadow: 0 20px 40px -15px rgba(0, 98, 255, 0.15);
+    }
+    .glass-nav {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    @keyframes pulse-custom {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 98, 255, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 98, 255, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 98, 255, 0); }
+    }
+    .pulse-animation {
+      animation: pulse-custom 2s infinite;
+    }
     body {
-      background-color: #f8fafc;
+      background-color: #F1F5F9;
       margin: 0;
       padding: 0;
     }
@@ -55,8 +74,8 @@
     "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
-    "vite": "https://esm.sh/vite@^7.3.1"
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>

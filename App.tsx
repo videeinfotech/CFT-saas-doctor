@@ -15,9 +15,19 @@ import { SettingsScreen } from './screens/doctor/SettingsScreen.tsx';
 import { ClinicQRCode } from './screens/doctor/ClinicQRCode.tsx';
 import { RoleSelection } from './screens/RoleSelection.tsx';
 import { PatientDashboard } from './screens/patient/PatientDashboard.tsx';
+import { PatientLogin } from './screens/patient/PatientLogin.tsx';
+import { PatientOtp } from './screens/patient/PatientOtp.tsx';
+import { PatientRegistration } from './screens/patient/PatientRegistration.tsx';
+import { PatientClinicProfile } from './screens/patient/PatientClinicProfile.tsx';
+import { PatientBookingWindow } from './screens/patient/PatientBookingWindow.tsx';
+import { PatientBookingConfirmation } from './screens/patient/PatientBookingConfirmation.tsx';
+import { PatientLiveQueue } from './screens/patient/PatientLiveQueue.tsx';
+import { PatientHistory } from './screens/patient/PatientHistory.tsx';
+import { PatientNotifications } from './screens/patient/PatientNotifications.tsx';
+import { PatientProfile } from './screens/patient/PatientProfile.tsx';
 
 const App: React.FC = () => {
-  const [currentScreen, setCurrentScreen] = useState<'splash' | 'role' | 'login' | 'otp' | 'registration' | 'services' | 'slots' | 'dashboard' | 'liveQueue' | 'consultation' | 'appointments' | 'profile' | 'settings' | 'qrCode' | 'patientDashboard'>('splash');
+  const [currentScreen, setCurrentScreen] = useState<'splash' | 'role' | 'login' | 'otp' | 'registration' | 'services' | 'slots' | 'dashboard' | 'liveQueue' | 'consultation' | 'appointments' | 'profile' | 'settings' | 'qrCode' | 'patientDashboard' | 'patientLogin' | 'patientOtp' | 'patientRegistration' | 'patientClinicProfile' | 'patientBookingWindow' | 'patientBookingConfirmation' | 'patientLiveQueue' | 'patientHistory' | 'patientNotifications' | 'patientProfile'>('splash');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [userRole, setUserRole] = useState<'doctor' | 'patient' | null>(null);
 
@@ -33,17 +43,37 @@ const App: React.FC = () => {
     if (role === 'doctor') {
       setCurrentScreen('login');
     } else {
-      setCurrentScreen('patientDashboard');
+      setCurrentScreen('patientLogin');
     }
   };
 
   const handleSendOtp = (num: string) => {
     setPhoneNumber(num);
-    setCurrentScreen('otp');
+    if (userRole === 'doctor') {
+      setCurrentScreen('otp');
+    } else {
+      setCurrentScreen('patientOtp');
+    }
   };
 
   const handleBackToLogin = () => {
-    setCurrentScreen('login');
+    if (userRole === 'doctor') {
+      setCurrentScreen('login');
+    } else {
+      setCurrentScreen('patientLogin');
+    }
+  };
+
+  const handleVerifyOtp = () => {
+    if (userRole === 'doctor') {
+      setCurrentScreen('registration');
+    } else {
+      setCurrentScreen('patientRegistration');
+    }
+  };
+
+  const handlePatientRegistrationComplete = () => {
+    setCurrentScreen('patientDashboard');
   };
 
   const handleGoToRegistration = () => {
@@ -64,10 +94,6 @@ const App: React.FC = () => {
 
   const handleBackToServices = () => {
     setCurrentScreen('services');
-  };
-
-  const handleVerifyOtp = () => {
-    setCurrentScreen('registration');
   };
 
   const handleFinishSetup = () => {
@@ -115,6 +141,22 @@ const App: React.FC = () => {
     setUserRole(null);
   };
 
+  const handleNavigateToClinicProfile = () => {
+    setCurrentScreen('patientClinicProfile');
+  };
+
+  const handleNavigateToHistory = () => {
+    setCurrentScreen('patientHistory');
+  };
+
+  const handleNavigateToNotifications = () => {
+    setCurrentScreen('patientNotifications');
+  };
+
+  const handleNavigateToPatientProfile = () => {
+    setCurrentScreen('patientProfile');
+  };
+
   return (
     <div className="max-w-[480px] mx-auto min-h-screen relative shadow-2xl overflow-x-hidden bg-slate-50">
       {currentScreen === 'splash' && <SplashScreen />}
@@ -137,6 +179,97 @@ const App: React.FC = () => {
             phoneNumber={phoneNumber} 
             onBack={handleBackToLogin} 
             onVerify={handleVerifyOtp} 
+          />
+        </div>
+      )}
+
+      {currentScreen === 'patientLogin' && (
+        <div className="animate-in fade-in duration-500">
+          <PatientLogin onSendOtp={handleSendOtp} />
+        </div>
+      )}
+
+      {currentScreen === 'patientOtp' && (
+        <div className="animate-in slide-in-from-right duration-500">
+          <PatientOtp 
+            phoneNumber={phoneNumber} 
+            onBack={handleBackToLogin} 
+            onVerify={handleVerifyOtp} 
+          />
+        </div>
+      )}
+
+      {currentScreen === 'patientRegistration' && (
+        <div className="animate-in slide-in-from-bottom duration-500">
+          <PatientRegistration 
+            phoneNumber={phoneNumber} 
+            onBack={() => setCurrentScreen('patientOtp')} 
+            onComplete={handlePatientRegistrationComplete} 
+          />
+        </div>
+      )}
+
+      {currentScreen === 'patientClinicProfile' && (
+        <div className="animate-in slide-in-from-right duration-500">
+          <PatientClinicProfile 
+            onBack={() => setCurrentScreen('patientDashboard')} 
+            onContinue={() => setCurrentScreen('patientBookingWindow')} 
+          />
+        </div>
+      )}
+
+      {currentScreen === 'patientBookingWindow' && (
+        <div className="animate-in slide-in-from-right duration-500">
+          <PatientBookingWindow 
+            onBack={() => setCurrentScreen('patientClinicProfile')} 
+            onConfirm={() => setCurrentScreen('patientBookingConfirmation')} 
+          />
+        </div>
+      )}
+
+      {currentScreen === 'patientBookingConfirmation' && (
+        <div className="animate-in zoom-in duration-500">
+          <PatientBookingConfirmation 
+            onTrackQueue={() => setCurrentScreen('patientLiveQueue')} 
+          />
+        </div>
+      )}
+
+      {currentScreen === 'patientLiveQueue' && (
+        <div className="animate-in slide-in-from-bottom duration-500">
+          <PatientLiveQueue onBack={() => setCurrentScreen('patientDashboard')} />
+        </div>
+      )}
+
+      {currentScreen === 'patientHistory' && (
+        <div className="animate-in slide-in-from-right duration-500">
+          <PatientHistory 
+            onBack={() => setCurrentScreen('patientDashboard')} 
+            onNavigateToHome={() => setCurrentScreen('patientDashboard')}
+            onNavigateToProfile={handleNavigateToPatientProfile}
+            onNavigateToNotifications={handleNavigateToNotifications}
+          />
+        </div>
+      )}
+
+      {currentScreen === 'patientNotifications' && (
+        <div className="animate-in slide-in-from-right duration-500">
+          <PatientNotifications 
+            onBack={() => setCurrentScreen('patientDashboard')} 
+            onNavigateToHome={() => setCurrentScreen('patientDashboard')}
+            onNavigateToBookings={handleNavigateToHistory}
+            onNavigateToProfile={handleNavigateToPatientProfile}
+          />
+        </div>
+      )}
+
+      {currentScreen === 'patientProfile' && (
+        <div className="animate-in slide-in-from-right duration-500">
+          <PatientProfile 
+            onBack={() => setCurrentScreen('patientDashboard')}
+            onNavigateToHome={() => setCurrentScreen('patientDashboard')}
+            onNavigateToBookings={handleNavigateToHistory}
+            onNavigateToNotifications={handleNavigateToNotifications}
           />
         </div>
       )}
@@ -218,7 +351,13 @@ const App: React.FC = () => {
 
       {currentScreen === 'patientDashboard' && (
         <div className="animate-in zoom-in duration-500">
-          <PatientDashboard onLogout={handleLogout} />
+          <PatientDashboard 
+            onLogout={handleLogout} 
+            onNavigateToClinicProfile={handleNavigateToClinicProfile}
+            onNavigateToHistory={handleNavigateToHistory}
+            onNavigateToNotifications={handleNavigateToNotifications}
+            onNavigateToProfile={handleNavigateToPatientProfile}
+          />
         </div>
       )}
     </div>
