@@ -48,13 +48,23 @@
       margin: 0;
       padding: 0;
     }
+    #root:empty::before {
+      content: 'Loading Claim Cure Buddy...';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: sans-serif;
+      color: #64748b;
+    }
   </style>
 <script type="importmap">
 {
   "imports": {
-    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
-    "react-dom": "https://esm.sh/react-dom@19.0.0",
     "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "react/jsx-runtime": "https://esm.sh/react@19.0.0/jsx-runtime",
     "@google/genai": "https://esm.sh/@google/genai@0.21.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/"
