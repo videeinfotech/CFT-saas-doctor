@@ -7,9 +7,15 @@ import { DoctorRegistration } from './screens/doctor/DoctorRegistration';
 import { DoctorServices } from './screens/doctor/DoctorServices';
 import { DoctorTimeSlots } from './screens/doctor/DoctorTimeSlots';
 import { DoctorDashboard } from './screens/doctor/DoctorDashboard';
+import { LiveQueue } from './screens/doctor/LiveQueue';
+import { Consultation } from './screens/doctor/Consultation';
+import { AppointmentsScreen } from './screens/doctor/AppointmentsScreen';
+import { ProfileScreen } from './screens/doctor/ProfileScreen';
+import { SettingsScreen } from './screens/doctor/SettingsScreen';
+import { ClinicQRCode } from './screens/doctor/ClinicQRCode';
 
 const App: React.FC = () => {
-  const [currentScreen, setCurrentScreen] = useState<'splash' | 'login' | 'otp' | 'registration' | 'services' | 'slots' | 'dashboard'>('splash');
+  const [currentScreen, setCurrentScreen] = useState<'splash' | 'login' | 'otp' | 'registration' | 'services' | 'slots' | 'dashboard' | 'liveQueue' | 'consultation' | 'appointments' | 'profile' | 'settings' | 'qrCode'>('splash');
   const [phoneNumber, setPhoneNumber] = useState('');
 
   useEffect(() => {
@@ -56,6 +62,46 @@ const App: React.FC = () => {
     setCurrentScreen('dashboard');
   };
 
+  const handleNavigateToQueue = () => {
+    setCurrentScreen('liveQueue');
+  };
+
+  const handleNavigateToAppointments = () => {
+    setCurrentScreen('appointments');
+  };
+
+  const handleNavigateToProfile = () => {
+    setCurrentScreen('profile');
+  };
+
+  const handleNavigateToSettings = () => {
+    setCurrentScreen('settings');
+  };
+
+  const handleNavigateToQRCode = () => {
+    setCurrentScreen('qrCode');
+  };
+
+  const handleBackToDashboard = () => {
+    setCurrentScreen('dashboard');
+  };
+
+  const handleBackToProfile = () => {
+    setCurrentScreen('profile');
+  };
+
+  const handleStartConsultation = () => {
+    setCurrentScreen('consultation');
+  };
+
+  const handleBackToQueue = () => {
+    setCurrentScreen('liveQueue');
+  };
+
+  const handleLogout = () => {
+    setCurrentScreen('login');
+  };
+
   return (
     <div className="max-w-[480px] mx-auto min-h-screen relative shadow-2xl overflow-x-hidden bg-slate-50">
       {currentScreen === 'splash' && <SplashScreen />}
@@ -96,7 +142,58 @@ const App: React.FC = () => {
 
       {currentScreen === 'dashboard' && (
         <div className="animate-in zoom-in duration-500">
-          <DoctorDashboard />
+          <DoctorDashboard 
+            onNavigateToQueue={handleNavigateToQueue} 
+            onNavigateToAppointments={handleNavigateToAppointments}
+            onNavigateToProfile={handleNavigateToProfile}
+            onNavigateToSettings={handleNavigateToSettings}
+          />
+        </div>
+      )}
+
+      {currentScreen === 'liveQueue' && (
+        <div className="animate-in slide-in-from-right duration-500">
+          <LiveQueue onBack={handleBackToDashboard} onPatientSelect={handleStartConsultation} />
+        </div>
+      )}
+
+      {currentScreen === 'consultation' && (
+        <div className="animate-in slide-in-from-bottom duration-500">
+          <Consultation onBack={handleBackToQueue} onEnd={handleBackToDashboard} />
+        </div>
+      )}
+
+      {currentScreen === 'appointments' && (
+        <div className="animate-in slide-in-from-right duration-500">
+          <AppointmentsScreen onBack={handleBackToDashboard} />
+        </div>
+      )}
+
+      {currentScreen === 'profile' && (
+        <div className="animate-in slide-in-from-bottom duration-500">
+          <ProfileScreen 
+            onBack={handleBackToDashboard} 
+            onLogout={handleLogout} 
+            onNavigateToSettings={handleNavigateToSettings}
+            onNavigateToQRCode={handleNavigateToQRCode}
+          />
+        </div>
+      )}
+
+      {currentScreen === 'settings' && (
+        <div className="animate-in slide-in-from-right duration-500">
+          <SettingsScreen 
+            onBack={handleBackToDashboard} 
+            onLogout={handleLogout}
+            onNavigateToDashboard={handleBackToDashboard}
+            onNavigateToAppointments={handleNavigateToAppointments}
+          />
+        </div>
+      )}
+
+      {currentScreen === 'qrCode' && (
+        <div className="animate-in slide-in-from-right duration-500">
+          <ClinicQRCode onBack={handleBackToProfile} />
         </div>
       )}
     </div>
